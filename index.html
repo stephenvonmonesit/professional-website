@@ -708,6 +708,26 @@ document.addEventListener('DOMContentLoaded', function(){
       }
     });
   });
+
+  // GA4 CTA click tracking for booking links
+  var bookingHref = 'https://calendar.app.google/nLQhfPXdSh88PVDP9';
+  function sendBookingEvent(label){
+    try{
+      if (typeof gtag === 'function') {
+        gtag('event', 'click', { 'event_category': 'CTA', 'event_label': label });
+      } else if (window.dataLayer) {
+        dataLayer.push({ event: 'cta_click', 'event_category':'CTA', 'event_label': label });
+      }
+    } catch(e){}
+  }
+
+  document.querySelectorAll('a[href="' + bookingHref + '"]').forEach(function(a){
+    a.setAttribute('data-cta','booking');
+    a.addEventListener('click', function(){
+      var label = (this.textContent || this.getAttribute('aria-label') || 'Book a call').trim();
+      sendBookingEvent(label);
+    });
+  });
 });
 </script>
 
