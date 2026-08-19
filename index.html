@@ -746,8 +746,13 @@ document.addEventListener('DOMContentLoaded', function(){
     img.addEventListener('error', function(){
       if (!this.dataset._fallback) {
         this.dataset._fallback = '1';
-        this.src = 'https://via.placeholder.com/600x400?text=Image+missing';
-        this.classList.add('img-missing');
+        var rootAsset = this.src.replace('/assets/', '/');
+        if (rootAsset !== this.src && rootAsset.indexOf('facebook.com/tr') === -1) {
+          this.src = rootAsset;
+        } else {
+          this.src = 'https://via.placeholder.com/600x400?text=Image+missing';
+          this.classList.add('img-missing');
+        }
       }
     });
   });
